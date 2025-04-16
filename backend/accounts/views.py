@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import UserProfile
+from .models import UserProfile, User
 from .serializers import UserProfileSerializer, UserSerializer
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
@@ -38,10 +37,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
         if response.status_code == 200:
             try:
-                user = User.objects.get(username=request.data.get('username'))
+                user = User.objects.get(email=request.data.get('email'))
                 response.data['user'] = UserSerializer(user).data
             except User.DoesNotExist:
-                # You may want to return 401 or just skip adding the user field
                 response.data['user'] = None
 
         return response

@@ -1,5 +1,26 @@
 from django.contrib import admin
-from .models import UserProfile
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.translation import gettext_lazy as _
+from .models import User
 
-# Register your models here.
-admin.site.register(UserProfile)
+@admin.register(User)
+class CustomUserAdmin(BaseUserAdmin):
+    ordering = ('email',)
+    list_display = ('email', 'first_name', 'last_name', 'is_staff')
+    search_fields = ('email', 'first_name', 'last_name')
+    
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2'),
+        }),
+    )
+
+    filter_horizontal = ('groups', 'user_permissions')

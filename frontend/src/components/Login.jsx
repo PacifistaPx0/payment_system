@@ -5,7 +5,7 @@ import { authService } from '../api/authService';
 
 const Login = () => {
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: ''
     });
     const [error, setError] = useState('');
@@ -24,7 +24,7 @@ const Login = () => {
         setError('');
         
         try {
-            const response = await authService.login(formData.username, formData.password);
+            const response = await authService.login(formData.email, formData.password);
             console.log('Login successful:', response);
             navigate('/dashboard'); // Redirect to dashboard on successful login
         } catch (err) {
@@ -38,12 +38,12 @@ const Login = () => {
             {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="username">Username:</label>
+                    <label htmlFor="email">Email:</label>
                     <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={formData.username}
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
                         required
                     />

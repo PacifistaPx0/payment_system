@@ -28,7 +28,6 @@ const Dashboard = () => {
             {error && <div className="error-message">{error}</div>}
             {user ? (
                 <div>
-                    <p>Username: {user.user.username}</p>
                     <p>Email: {user.user.email}</p>
                     <p>First Name: {user.user.first_name}</p>
                     <p>Last Name: {user.user.last_name}</p>
